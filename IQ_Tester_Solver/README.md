@@ -1,6 +1,6 @@
 # IQ Tester Puzzle
 
-![IQ Tester Puzzle](https://github.com/Abraxos/fun-stuff/blob/master/IQ_Tester_Solver/iqtester.jpg,IQ Tester Puzzle)
+![IQ Tester Puzzle](https://raw.githubusercontent.com/Abraxos/fun-stuff/master/IQ_Tester_Solver/iqtester.jpg,IQ Tester Puzzle)
 
 This is just a silly little puzzle that my friend showed me and dared me to see how long it would take to code up a program to solve it. Naturally with python it only took about a half hour. There is a picture of the puzzle in the accompanying file: iqtester.jpg
 

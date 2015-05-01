@@ -84,6 +84,7 @@ typedef struct WorkerTParam
 // General Utility Functions
 unsigned int factorial(int i);
 unsigned int** permutations(unsigned int* array, int size);
+int next_permutation(unsigned int* a, unsigned int s);
 void print_matrix(unsigned int** m, unsigned int rs, unsigned int cs);
 void free_matrix(unsigned int** m, unsigned int nr);
 

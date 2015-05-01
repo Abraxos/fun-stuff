@@ -20,6 +20,11 @@ void print_arr(int* a, unsigned int s)
     printf("\n");
 }
 
+int cmpfunc (const void * a, const void * b)
+{
+   return ( *(int*)a - *(int*)b );
+}
+
 void free_matrix(unsigned int** m, unsigned int nr)
 {
     if (nr > 1)
@@ -117,6 +122,39 @@ unsigned int** permutations(unsigned int* array, int s)
     return p;
 }
 
+unsigned int idx_of_min_from(unsigned int* a, unsigned int s)
+{
+    unsigned int i = 0; 
+    unsigned int m = 0xffffffff; 
+    unsigned int mi = 0;
+    for (i = 0; i < s; i++)
+    {
+        if (a[i] > a[0] && a[i] < m)
+        {
+            m = a[i];
+            mi = i;
+        }
+    }
+    return mi;
+}
+
+int next_permutation(unsigned int* a, unsigned int s)
+{
+    int i = s - 2;
+    int j;
+    for (i = s - 2; i > -1; i--)
+    {
+        if (a[i] < a[i+1])
+        {
+            j = idx_of_min_from(a + i, s - i) + i;
+            swap(a,i,j);
+            qsort(a + i + 1, s - i - 1, sizeof(unsigned int), cmpfunc);
+            return 1;
+        }
+    }
+    return 0;
+}
+
 unsigned int* vertex_indices(Graph* g)
 {
     unsigned int i;
@@ -166,15 +204,10 @@ int isomorphic(Graph* g1,Graph* g2)
     
     unsigned int i,j,valid_mapping_found = FALSE;
     unsigned int mapping_invalid;
-    unsigned int* vi = vertex_indices(g2);
-    unsigned int** p = permutations(vi,g2->_numVertices);
-    unsigned int num_permutations = factorial(g2->_numVertices);
-    free(vi);
-    
-    for (i = 0; i < num_permutations; i++)
+    unsigned int* m = vertex_indices(g2);
+    while(next_permutation(m,g1->_numVertices))
     {
         mapping_invalid = FALSE;
-        unsigned int* m = p[i];
         for (j = 0; j < g1->_numEdges && !mapping_invalid; j++)
         {
             unsigned int v1 = g1->_edges[j]->_v1;
@@ -190,7 +223,7 @@ int isomorphic(Graph* g1,Graph* g2)
             break;
         }
     }
-    free_matrix(p,num_permutations);
+    free(m);
     return valid_mapping_found;
 }
 
@@ -808,11 +841,6 @@ void connect_by_idx(unsigned int x, unsigned int y, Graph* g)
         n_edge->_v2 = y;
         g->_edges[g->_numEdges++] = n_edge;
     }
-}
-
-int cmpfunc (const void * a, const void * b)
-{
-   return ( *(int*)a - *(int*)b );
 }
 
 unsigned int* degree_sequence(Graph* g)

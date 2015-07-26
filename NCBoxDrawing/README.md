@@ -11,6 +11,6 @@ draw_ui_boxes(tb,[(0,0),(w // 3,0),(w,0),(0,2),(w // 3,2),(0,4),(w // 3,4),(0,6)
 
 Produces the following output:
 
-![Drawn UI](/Result.png)
+![Drawn UI](Result.png)
 
 The algorithm works by determining the kinds of intersections that occur at every vertex and draws the lines between them first and then adds the pieces at each intersection. Again, it is fairly simple, I just figured that I could put up a demo of it as a reference for how to easily make NCurses UI Elements.

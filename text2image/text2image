@@ -1,0 +1,91 @@
+#!/usr/bin/python
+import argparse
+from PIL import Image, ImageFont, ImageDraw
+from os import getcwd
+from os.path import isfile, splitext, dirname, realpath
+
+SPACE = 4
+PROGRAM_DESCRIPTION = ('Given a text file, this program converts it into an '
+                       'image of a given width. The output file name allows the'
+                       ' program to determine the type of image.')
+I_HELP = 'The path to a text file (.txt) that is to be converted into an image.'
+O_HELP = 'The path to the output image file. Can be any image format.'
+W_HELP = 'The width of the image in pixels.'
+F_HELP = ('The path to a .ttf font file that will be used to display the text '
+          'in the image. Defaults to "text2image_font.ttf" but it will fail if '
+          'there is no such file in the directory where this file is located.')
+S_HELP = 'The size of the font to be used. Defaults to 15'
+FONT_DEFAULT_LOC = dirname(realpath(__file__)) +  '/text2image_font.ttf'
+
+def txt2image(txt_file,width,font_filepath,font_size):
+    def line2lines(max_width, text, font):
+        lines = []
+        cln = ''
+        lcntr = 0
+        for c in text:
+            cln += c
+            width, height = font.getsize(cln)
+            if width > max_width - 2 * SPACE:
+                lines.append(cln[:-1])
+                cln = c
+        lines.append(cln[:-1])
+        return lines
+    try:
+        font = ImageFont.truetype(font_filepath, font_size)
+    except IOError:
+        print("There was a problem processing the font file. Please check that "
+              "it exists at the specified path and is properly formatted.")
+        exit()
+    try:
+        file_lines = open(txt_file,'r').readlines()
+    except IOError:
+        print("There was an error when reading the text file: '%s'" % txt_file)
+        exit()
+    line_height = font.getsize(file_lines[0])[1]
+    lines = []
+    for line in file_lines:
+        lines.extend(line2lines(width,line,font))
+    y_offset = SPACE
+    height = 2 * y_offset + ((line_height + SPACE) * len(lines))
+    image = Image.new('RGB', (width,height), (255,255,255))
+    draw = ImageDraw.Draw(image)
+    for line in lines:
+        draw.text((SPACE, y_offset), line, font=font, fill=(0,0,0))
+        y_offset += line_height + SPACE
+    return image
+
+def generateImgFile(input,output,width,font_filepath,font_size):
+    print("Generating image file: %s From Text: %s at a Width of: %ipx using: %s of size: %ipts." % (output, input, width, font_filepath, font_size))
+    if not isfile(input):
+        print("Input file '%s' does not exist!" % input)
+    elif not input.endswith('.txt'):
+        print("Input file '%s' is not a text file!" % input)
+    elif isfile(output):
+        print("File already exists at the output path: '%s'" % output)
+    elif not isfile(font_filepath):
+        print("Font file '%s' does not exist! Either download a default TTF "
+              "font file to use and place it there, or specify a font file you "
+              "want to use." % font_filepath)
+    else:
+        image = txt2image(input,width,font_filepath,font_size)
+        try:
+            image.save(output,dpi=(300,300))
+        except IOError:
+            print("There was an error when trying to save the file '%s'" % output)
+        except KeyError:
+            print("There was an error trying to save the file as '%s' Please "
+                  "make sure that its a known image file format" % output)
+
+
+def main():
+    parser = argparse.ArgumentParser(description=PROGRAM_DESCRIPTION)
+    parser.add_argument('-i','--input', help=I_HELP, required=True, default=None)
+    parser.add_argument('-o','--output', help=O_HELP, required=True, default=None)
+    parser.add_argument('-w','--width', help=W_HELP, required=True, type=int, default=None)
+    parser.add_argument('-f','--font_file', help=F_HELP, default=FONT_DEFAULT_LOC)
+    parser.add_argument('-s','--font_size', help=S_HELP, type=int, default=15)
+    args = parser.parse_args()
+    generateImgFile(args.input, args.output, args.width, args.font_file, args.font_size)
+
+if __name__ == "__main__":
+    main()

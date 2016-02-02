@@ -2,6 +2,12 @@
 
 _by Eugene Kovalev_
 
+---
+
+_This is the project submission document, as submitted with this assignment with the exception of this statement in italics. It describes the requirements of the project as stated by the instructor and shows in detail how those requirements were met. The point of this project was to write an arbitrary precision integer library and then use said library to make a set of cryptographic primitives that can then be used to make a Pseudo-Random Generator that is secure if the Discrete Logs assumption is true. The project was intended to be done in either Java or C++, but I preferred to do it in C. The following is a detailed description of this project which includes examples of how it can be tested._
+
+---
+
 NOTE: This readme was written in markdown format. It can be read in a normal text editor, however, to view it in the most reader-friendly way please use a markdown reader application. If no such application is installed on your machine, please use the online markdown reader provided here: http://dillinger.io/ (simply paste this readme into the left panel of the site, and it will be rendered as markdown on the right).
 
 NOTE: This program, as well as all dependencies, was written, installed, and tested on Debian Jessie. Consequently this readme was written assuming the same operating system is used. I cannot guarantee the same instructions will work the same way on other systems.

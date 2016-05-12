@@ -2,8 +2,7 @@
 
 This is a program I am fairly proud of, it took me a little while to write, especially with my limited knowledge and experience in C, but it does seem to work and it does seem to behave properly when tested for memory bugs in valgrind. This is definitely not the most efficient way to do this, but it is a good place to start. I hope to improve this implementation with at least a couple of new things:
 
-1. More efficient permutation generator. Right now it just generates all possible permutations for a set of vertices which can definitely be done better.
-2. Add frequency support. Right now its technically not a *frequent* subgraph miner, its just a subgraph miner. Adding size constraints should be very easy though.
+1. Add frequency support. Right now its technically not a *frequent* subgraph miner, its just a subgraph miner. Adding size constraints should be very easy though.
 3. Add support for mining only connected graphs. Right now it mines ALL possible subgraphs, which includes disconnected ones. The connected graphs are more interesting.
 
 Useful Information: https://en.wikipedia.org/wiki/Subgraph_isomorphism_problem
